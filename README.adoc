@@ -1,0 +1,33 @@
+Read raw HTML source code from file
+and parse chapter beginning time and chapter name in an ffmpeg chapter metadata format according to
+
+https://ikyle.me/blog/2020/add-mp4-chapters-ffmpeg
+and
+
+https://topic.alibabacloud.com/a/ffmpegs-understanding-about-timebase_8_8_10257510.html +
+(search for "II: What is the timebase in FFmpeg")
+
+Merge output of the base metadata
+
+ ffmpeg -i 01-1-Go_Deep_-_Group_Lesson.mp4 -f ffmetadata 01-1-Go_Deep_-_Group_Lesson-metadata.txt
+
+With the output of this program for the corresponding video
+
+Example of a chapter file
+
+....
+   [CHAPTER]
+   TIMEBASE=1/1
+   START=39
+   END=262
+   title=Crew Introduction
+
+   [CHAPTER]
+   TIMEBASE=1/1
+   START=262
+   END=1299
+   title=Yoga and Stretches
+
+   [CHAPTER]
+   ...
+....
