@@ -9,9 +9,10 @@ std::vector<std::string> Parser::extractDataFromChapterTimestampFile() {
 
     std::vector<std::string> chapterTimestamps;
 
-    //std::vector<std::unique_ptr<Session>> sessions;
+    std::vector<std::unique_ptr<Session>> sessions;
     // TODO change previous 'sessions' local var from type 'vector' to custom type 'Sessions'
-      auto sessions = std::make_unique<Sessions>;
+    //  auto sessions = std::make_unique<Sessions>;
+    //auto sessions = std::make_unique<Sessions>;
 
     while (std::getline(baseMetadataFile, line)) {
 
