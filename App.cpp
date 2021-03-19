@@ -9,13 +9,13 @@ App::App(string inputFilePath) :
 
 void App::generateFFMPEG_ChapterMetadata() {
     std::vector<string> chapterTimestamps = parser->extractDataFromChapterTimestampFile();
-    //TODO
-    // auto sessions = parser->extractDataFromChapterTimestampFile();
+    // TODO do this instead
+    //  auto sessions = parser->extractDataFromChapterTimestampFile();
 
     printChapterTimestamps(chapterTimestamps);
 
-    //TODO
-    // std::cout << sessions << std::endl;
+    // TODO do this instead
+    //  std::cout << sessions << std::endl;
 }
 
 void App::printChapterTimestamps(vector<string>& chapterTimestamps) {

@@ -2,6 +2,7 @@
 
 #include "Chapter.h"
 #include "Session.h"
+#include "Sessions.h"
 
 //TODO tidy up includes
 #include <fstream>
@@ -20,6 +21,8 @@ public:
     {}
 
     std::vector<std::string> extractDataFromChapterTimestampFile();
+    // TODO do this instead
+    //  Sessions extractDataFromChapterTimestampFile();
 
 private:
     std::string removeLeadingSpaces(std::string& line);
