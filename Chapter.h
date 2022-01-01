@@ -5,10 +5,8 @@
 
 class Chapter {
 public:
-    Chapter(std::string sessionName, std::string name, std::string beginTime);
-    Chapter(std::string sessionName, std::string name, std::string beginTime, std::string endTime);
+    Chapter(std::string name, std::string beginTime);
 
-    std::string getSessionName() const;
     std::string getBeginTime() const;
     void setEndTime(std::string time);
 
@@ -28,13 +26,16 @@ public:
         //out << "title=" << this->sessionName << ": " << this->name << "\n";   // Crew Introduction
         //out << "\n";   [empty line after each CHAPTER entry]
 
-        out << "sessionName: " << chapter.sessionName << ";\tname: " << chapter.name << ";\tbeginTime:" << chapter.beginTime << "\tendTime:" << chapter.endTime;
+        out << "name: " << chapter.name << ";\tbeginTime:" << chapter.beginTime << "\tendTime:" << chapter.endTime;
         return out;
     }
 
 private:
-    std::string sessionName;
     std::string name;
+
+    // TODO change from string to uint_fast32_t - simpler conversion when doing arithmetics
     std::string beginTime;
+
+    // TODO change from string to uint_fast32_t
     std::string endTime;
 };

@@ -9,9 +9,11 @@ class Session {
 public:
     explicit Session(std::string name);
 
-    void addChapter(std::string sessionName, std::string chapterName, std::string chapterBeginTime);
+    void addChapter(std::string chapterName, std::string chapterBeginTime);
 
     friend std::ostream& operator<<(std::ostream& out, const Session& session) {
+        out << session.name << "\n";
+
         for (const auto& chapter : session.chapters) {
             out << *chapter << "\n";
         }
