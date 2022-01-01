@@ -1,9 +1,12 @@
 #include "Chapter.h"
 
-Chapter::Chapter(std::string name, std::string beginTime) :
-    name(std::move(name)), beginTime(std::move(beginTime))
+using std::string;
+
+// TODO add sessionName to constructor attrs
+Chapter::Chapter(string sessionName, string name, string beginTime) :
+    sessionName(sessionName), name(std::move(name)), beginTime(std::move(beginTime))
 {}
 
-void Chapter::setEndTime(std::string time) {
+void Chapter::setEndTime(string time) {
     this->endTime = std::move(time);
 }

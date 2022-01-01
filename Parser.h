@@ -1,16 +1,13 @@
 #pragma once
 
 #include "Chapter.h"
-#include "Session.h"
-#include "Sessions.h"
 
-//TODO tidy up includes
 #include <fstream>
 #include <iostream>
-#include <string>
-#include <sstream>
-#include <vector>
 #include <memory>
+#include <sstream>
+#include <string>
+#include <vector>
 
 using std::string;
 
@@ -20,9 +17,10 @@ public:
         inputFilePath(std::move(inputFilePath))
     {}
 
-    std::vector<std::string> extractDataFromChapterTimestampFile();
     // TODO do this instead
     //  Sessions extractDataFromChapterTimestampFile();
+    //std::vector<std::string> extractDataFromChapterTimestampFile();
+    std::vector<std::unique_ptr<Chapter>> extractDataFromChapterTimestampFile();
 
 private:
     std::string removeLeadingSpaces(std::string& line);

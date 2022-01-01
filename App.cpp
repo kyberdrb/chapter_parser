@@ -8,7 +8,7 @@ App::App(string inputFilePath) :
 {}
 
 void App::generateFFMPEG_ChapterMetadata() {
-    std::vector<string> chapterTimestamps = parser->extractDataFromChapterTimestampFile();
+    auto chapterTimestamps = parser->extractDataFromChapterTimestampFile();
     // TODO do this instead
     //  auto sessions = parser->extractDataFromChapterTimestampFile();
 
@@ -18,8 +18,8 @@ void App::generateFFMPEG_ChapterMetadata() {
     //  std::cout << sessions << std::endl;
 }
 
-void App::printChapterTimestamps(vector<string>& chapterTimestamps) {
-    for (const auto& attribute : chapterTimestamps) {
-        std::cout << attribute << "\n";
+void App::printChapterTimestamps(vector<std::unique_ptr<Chapter>>& chapterTimestamps) {
+    for (const auto& chapter : chapterTimestamps) {
+        std::cout << *chapter << "\n";
     }
 }

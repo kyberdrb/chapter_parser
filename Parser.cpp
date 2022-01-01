@@ -1,15 +1,18 @@
 #include "Parser.h"
-#include "Sessions.h"
+//#include "Session.h"
 
-std::vector<std::string> Parser::extractDataFromChapterTimestampFile() {
+//std::vector<std::string> Parser::extractDataFromChapterTimestampFile() {
+std::vector<std::unique_ptr<Chapter>> Parser::extractDataFromChapterTimestampFile() {
     std::ifstream baseMetadataFile;
     baseMetadataFile.open(this->inputFilePath);
 
     std::string line;
+    std::string sessionName;
 
-    std::vector<std::string> chapterTimestamps;
+    //TODO rework to 'std::vector<Session> chapterTimestamps;' for SRP and encapsulation
+    std::vector<std::unique_ptr<Chapter>> chapters;
 
-    std::vector<std::unique_ptr<Session>> sessions;
+    //std::vector<std::unique_ptr<Session>> sessions;
     // TODO change previous 'sessions' local var from type 'vector' to custom type 'Sessions'
     //  auto sessions = std::make_unique<Sessions>;
     //auto sessions = std::make_unique<Sessions>;
@@ -22,11 +25,10 @@ std::vector<std::string> Parser::extractDataFromChapterTimestampFile() {
 
             bool doesLineContainSessionName = line.at(0) != '<';
             if (doesLineContainSessionName) {
-                auto& sessionName = line;
-                chapterTimestamps.push_back(sessionName);
+                sessionName = line;
 
-                auto session = std::make_unique<Session>(sessionName);
-                sessions.emplace_back(std::move(session));
+                //auto session = std::make_unique<Session>(sessionName);
+                //sessions.emplace_back(std::move(session));
 
                 continue;
             }
@@ -44,7 +46,6 @@ std::vector<std::string> Parser::extractDataFromChapterTimestampFile() {
                     if (isChapterBeginningTimeFound) {
                         ++htmlAttribute;
                         chapterBeginTime = *htmlAttribute;
-                        chapterTimestamps.emplace_back(*htmlAttribute);
                         continue;
                     }
 
@@ -53,25 +54,33 @@ std::vector<std::string> Parser::extractDataFromChapterTimestampFile() {
                     if (isChapterNameFound) {
                         ++htmlAttribute;
                         chapterName = *htmlAttribute;
-                        chapterTimestamps.emplace_back(*htmlAttribute);
                         continue;
                     }
                 }
 
                 bool areChapterDataValid = !(chapterName.empty() && chapterBeginTime.empty());
                 if (areChapterDataValid) {
-                    sessions.back()->addChapter(std::move(chapterName), std::move(chapterBeginTime));
+                    //sessions.back()->addChapter(std::move(chapterName), std::move(chapterBeginTime));
+                    auto chapter = std::make_unique<Chapter>(
+                            sessionName,
+                            std::move(chapterName),
+                            std::move(chapterBeginTime));
+                    chapters.emplace_back(std::move(chapter));
                 }
             }
         }
     }
 
-    for (auto& session : sessions) {
-        std::cout << *session << "\n";
-    }
+//    for (auto& session : sessions) {
+//        std::cout << *session << "\n";
+//    }
 
-    //TODO return local var of type 'Sessions'
-    return chapterTimestamps;
+    // TODO deduce end times for each chapter if possible
+    //  - the last chapter will not have an end time
+    //  - the end time of one chapter is the beginning of the start time of the successing chapter
+
+    //TODO later return local var of type 'Sessions'
+    return chapters;
 }
 
 std::string Parser::removeLeadingSpaces(std::string& line) {

@@ -16,7 +16,7 @@ public:
     void generateFFMPEG_ChapterMetadata();
 
 private:
-    void printChapterTimestamps(vector<string>& chapterTimestamps);
+    void printChapterTimestamps(vector<std::unique_ptr<Chapter>>& chapterTimestamps);
 
     std::unique_ptr<Parser> parser;
 };

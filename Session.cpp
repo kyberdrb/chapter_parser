@@ -6,6 +6,7 @@ Session::Session(std::string name) :
 
 void Session::addChapter(std::string chapterName, std::string chapterBeginTime) {
     auto chapter = std::make_unique<Chapter>(
+        "TODO add session name :P",
         std::move(chapterName),
         std::move(chapterBeginTime));
     chapters.emplace_back(std::move(chapter));
