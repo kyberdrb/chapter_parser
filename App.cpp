@@ -18,8 +18,14 @@ void App::generateFFMPEG_ChapterMetadata() {
     //  std::cout << sessions << std::endl;
 }
 
-void App::printChapterTimestamps(vector<std::unique_ptr<Chapter>>& chapterTimestamps) {
+void App::printChapterTimestamps(vector<std::unique_ptr<Chapter>>& chapterTimestamps) const {
     for (const auto& chapter : chapterTimestamps) {
         std::cout << *chapter << "\n";
+    }
+}
+
+void App::printChapterTimestamps(vector<std::unique_ptr<Session>>& sessions) const {
+    for (const auto& session : sessions) {
+        std::cout << *session << "\n";
     }
 }

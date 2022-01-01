@@ -2,9 +2,15 @@
 
 using std::string;
 
-// TODO add sessionName to constructor attrs
 Chapter::Chapter(string sessionName, string name, string beginTime) :
     sessionName(sessionName), name(std::move(name)), beginTime(std::move(beginTime))
+{}
+
+Chapter::Chapter(string sessionName, string name, string beginTime, string endTime) :
+        sessionName(sessionName),
+        name(std::move(name)),
+        beginTime(std::move(beginTime)),
+        endTime(std::move(endTime))
 {}
 
 string Chapter::getSessionName() const {

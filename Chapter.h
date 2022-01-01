@@ -6,6 +6,7 @@
 class Chapter {
 public:
     Chapter(std::string sessionName, std::string name, std::string beginTime);
+    Chapter(std::string sessionName, std::string name, std::string beginTime, std::string endTime);
 
     std::string getSessionName() const;
     std::string getBeginTime() const;

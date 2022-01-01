@@ -1,7 +1,7 @@
 #include "Parser.h"
-#include "Session.h"
 
-std::vector<std::unique_ptr<Chapter>> Parser::extractDataFromChapterTimestampFile() {
+//std::vector<std::unique_ptr<Chapter>> Parser::extractDataFromChapterTimestampFile() {
+std::vector<std::unique_ptr<Session>> Parser::extractDataFromChapterTimestampFile() {
     std::ifstream baseMetadataFile;
     baseMetadataFile.open(this->inputFilePath);
 
@@ -72,7 +72,6 @@ std::vector<std::unique_ptr<Chapter>> Parser::extractDataFromChapterTimestampFil
                             // previous (forelast) chapter's end time:  sessions.at(sessions.size() - 1 - 1).setEndTime(currentChaptersBeginTime - 1)
 
                             // setForelastChapterEndTimeTo(lastChapterBeginTimeOneSecBehind);
-                            // TODO convert beginTime to number, subtract 1 from it (to ensure clear, nonoverlapping time boundaries), then convert it back to string
                             chapters.at(chapters.size() - 1 - 1)->setEndTime(std::to_string(std::stoi(chapters.back()->getBeginTime()) - 1));
                         }
                     }
@@ -96,7 +95,8 @@ std::vector<std::unique_ptr<Chapter>> Parser::extractDataFromChapterTimestampFil
     //  - the end time of one chapter is the beginning of the start time of the successing chapter
 
     //TODO later return local var of type 'Sessions'
-    return chapters;
+    //return chapters;
+    return sessions;
 }
 
 std::string Parser::removeLeadingSpaces(std::string& line) {

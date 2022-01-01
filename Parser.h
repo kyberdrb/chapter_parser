@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chapter.h"
+#include "Session.h"
 
 #include <fstream>
 #include <iostream>
@@ -19,7 +19,8 @@ public:
 
     // TODO do this instead
     //  Sessions extractDataFromChapterTimestampFile();
-    std::vector<std::unique_ptr<Chapter>> extractDataFromChapterTimestampFile();
+    //std::vector<std::unique_ptr<Chapter>> extractDataFromChapterTimestampFile();
+    std::vector<std::unique_ptr<Session>> extractDataFromChapterTimestampFile();
 
 private:
     std::string removeLeadingSpaces(std::string& line);
