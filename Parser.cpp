@@ -1,7 +1,6 @@
 #include "Parser.h"
-//#include "Session.h"
+#include "Session.h"
 
-//std::vector<std::string> Parser::extractDataFromChapterTimestampFile() {
 std::vector<std::unique_ptr<Chapter>> Parser::extractDataFromChapterTimestampFile() {
     std::ifstream baseMetadataFile;
     baseMetadataFile.open(this->inputFilePath);
@@ -12,7 +11,7 @@ std::vector<std::unique_ptr<Chapter>> Parser::extractDataFromChapterTimestampFil
     //TODO rework to 'std::vector<Session> chapterTimestamps;' for SRP and encapsulation
     std::vector<std::unique_ptr<Chapter>> chapters;
 
-    //std::vector<std::unique_ptr<Session>> sessions;
+    std::vector<std::unique_ptr<Session>> sessions;
     // TODO change previous 'sessions' local var from type 'vector' to custom type 'Sessions'
     //  auto sessions = std::make_unique<Sessions>;
     //auto sessions = std::make_unique<Sessions>;
@@ -27,8 +26,8 @@ std::vector<std::unique_ptr<Chapter>> Parser::extractDataFromChapterTimestampFil
             if (doesLineContainSessionName) {
                 sessionName = line;
 
-                //auto session = std::make_unique<Session>(sessionName);
-                //sessions.emplace_back(std::move(session));
+                auto session = std::make_unique<Session>(sessionName);
+                sessions.emplace_back(std::move(session));
 
                 continue;
             }
@@ -60,7 +59,24 @@ std::vector<std::unique_ptr<Chapter>> Parser::extractDataFromChapterTimestampFil
 
                 bool areChapterDataValid = !(chapterName.empty() && chapterBeginTime.empty());
                 if (areChapterDataValid) {
-                    //sessions.back()->addChapter(std::move(chapterName), std::move(chapterBeginTime));
+                    // TODO replace vector 'chapters' with vector 'sessions'
+                    // TODO add std::move to chapterName and chapterBeginTime
+                    sessions.back()->addChapter(sessionName, chapterName, chapterBeginTime);
+
+                    if (chapters.size() >= 2) {
+                        bool haveConsecutiveChaptersSameSessionName = chapters.back()->getSessionName() == chapters.at(chapters.size() - 2)->getSessionName();
+                        if (haveConsecutiveChaptersSameSessionName) {
+                            // deduce the end time of previous chapter - one second behind
+                            // change end time of previous chapter to one second behind the
+                            // current (last) chapter's begin time:     sessions.back().getBeginTime()
+                            // previous (forelast) chapter's end time:  sessions.at(sessions.size() - 1 - 1).setEndTime(currentChaptersBeginTime - 1)
+
+                            // setForelastChapterEndTimeTo(lastChapterBeginTimeOneSecBehind);
+                            // TODO convert beginTime to number, subtract 1 from it (to ensure clear, nonoverlapping time boundaries), then convert it back to string
+                            chapters.at(chapters.size() - 1 - 1)->setEndTime(std::to_string(std::stoi(chapters.back()->getBeginTime()) - 1));
+                        }
+                    }
+
                     auto chapter = std::make_unique<Chapter>(
                             sessionName,
                             std::move(chapterName),

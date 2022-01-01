@@ -19,7 +19,6 @@ public:
 
     // TODO do this instead
     //  Sessions extractDataFromChapterTimestampFile();
-    //std::vector<std::string> extractDataFromChapterTimestampFile();
     std::vector<std::unique_ptr<Chapter>> extractDataFromChapterTimestampFile();
 
 private:

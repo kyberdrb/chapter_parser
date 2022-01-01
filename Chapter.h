@@ -6,6 +6,9 @@
 class Chapter {
 public:
     Chapter(std::string sessionName, std::string name, std::string beginTime);
+
+    std::string getSessionName() const;
+    std::string getBeginTime() const;
     void setEndTime(std::string time);
 
     // Sample output:
