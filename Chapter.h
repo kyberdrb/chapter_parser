@@ -33,8 +33,9 @@ public:
 private:
     std::string name;
 
-    // TODO change from string to uint_fast32_t - simpler conversion when doing arithmetics
+    // TODO change from string to uint_fast32_t - less conversions in program when doing arithmetics
     std::string beginTime;
+    //uint_fast32_t beginTime;
 
     // TODO change from string to uint_fast32_t
     std::string endTime;
