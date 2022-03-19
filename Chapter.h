@@ -19,14 +19,14 @@ public:
     //   title=Crew Introduction
     //   [empty line after each CHAPTER entry]
     friend std::ostream& operator<<(std::ostream& out, const Chapter& chapter) {
-        //out << "[CHAPTER]" << "\n";
-        //out << "TIMEBASE=1/1" << "\n"
-        //out << "START=" << this->beginTime << "\n";                           // 39
-        //out << "END=" << this->endTime << "\n";                               // 262
-        //out << "title=" << this->sessionName << ": " << this->name << "\n";   // Crew Introduction
-        //out << "\n";   [empty line after each CHAPTER entry]
+        out << "[CHAPTER]" << "\n";
+        out << "TIMEBASE=1/1" << "\n";
+        out << "START=" << chapter.beginTime << "\n";  // 39
+        out << "END=" << chapter.endTime << "\n";      // 262
+        out << "title=" << chapter.name << "\n";       // Crew Introduction
+        out << "\n";                                   //[empty line after each CHAPTER entry]
 
-        out << "name: " << chapter.name << ";\tbeginTime:" << chapter.beginTime << "\tendTime:" << chapter.endTime;
+        //out << "name:" << chapter.name << ";\tbeginTime:" << chapter.beginTime << "\tendTime:" << chapter.endTime;
         return out;
     }
 

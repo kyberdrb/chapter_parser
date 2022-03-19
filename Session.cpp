@@ -1,5 +1,7 @@
 #include "Session.h"
 
+#include <algorithm>
+
 using std::string;
 
 Session::Session(std::string name) :
@@ -16,6 +18,10 @@ void Session::addChapter(std::string chapterName, std::string chapterBeginTime) 
     if (this->chapters.size() >= 2) {
         updateForelastChapterEndTime();
     }
+}
+
+std::string Session::getSessionName() const {
+    return this->name;
 }
 
 void Session::updateForelastChapterEndTime() {

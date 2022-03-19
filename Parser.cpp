@@ -1,18 +1,13 @@
 #include "Parser.h"
 
-std::vector<std::unique_ptr<Session>> Parser::extractDataFromChapterTimestampFile() {
+std::unique_ptr<Sessions> Parser::extractDataFromChapterTimestampFile() {
+
     std::ifstream baseMetadataFile;
     baseMetadataFile.open(this->inputFilePath);
 
     std::string line;
     std::string sessionName;
-
-    // TODO first copy (then move) 'sessions' vector and all its related operations from Parser to Sessions
-    std::vector<std::unique_ptr<Session>> sessions;
-
-    // TODO change previous 'sessions' local var from type 'vector' to custom type 'Sessions'
-    //  auto sessions = std::make_unique<Sessions>;
-    //auto sessions = std::make_unique<Sessions>;
+    auto sessions = std::make_unique<Sessions>();
 
     while (std::getline(baseMetadataFile, line)) {
 
@@ -25,7 +20,10 @@ std::vector<std::unique_ptr<Session>> Parser::extractDataFromChapterTimestampFil
                 sessionName = line;
 
                 auto session = std::make_unique<Session>(sessionName);
-                sessions.emplace_back(std::move(session));
+                sessions->add_session(std::move(session));
+
+                // addStartingChapter
+                sessions->add_chapter_to_last_session("Start", "0");
 
                 continue;
             }
@@ -57,7 +55,7 @@ std::vector<std::unique_ptr<Session>> Parser::extractDataFromChapterTimestampFil
 
                 bool areChapterDataValid = !(chapterName.empty() && chapterBeginTime.empty());
                 if (areChapterDataValid) {
-                    sessions.back()->addChapter(
+                    sessions->add_chapter_to_last_session(
                         std::move(chapterName),
                         std::move(chapterBeginTime));
                 }
@@ -65,7 +63,6 @@ std::vector<std::unique_ptr<Session>> Parser::extractDataFromChapterTimestampFil
         }
     }
 
-    //TODO return local var of type 'Sessions'
     return sessions;
 }
 

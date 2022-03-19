@@ -31,3 +31,13 @@ Example of a chapter file
    [CHAPTER]
    ...
 ....
+
+## Chapter names post procesing
+
+....
+mv 01-Go\ Deep.chapter_timestamps 01-Go_Deep.chapter_timestamps
+mv 02-Stress\ Control.chapter_timestamps 02-Stress_Control.chapter_timestamps
+mv 10-Life\ Adventure.chapter_timestamps 10-Life_Adventure.chapter_timestamps
+mv 03-Energy\ Management.chapter_timestamps 03-Energy_Management.chapter_timestamps
+mv 07-Under\ Pressure.chapter_timestamps 07-Under_Pressure.chapter_timestamps
+....

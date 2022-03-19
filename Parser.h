@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Session.h"
+//#include "Session.h"
+#include "Sessions.h"
 
 #include <fstream>
 #include <iostream>
@@ -16,10 +17,8 @@ public:
     explicit Parser(string inputFilePath) :
         inputFilePath(std::move(inputFilePath))
     {}
-
-    // TODO do this instead
-    //  Sessions extractDataFromChapterTimestampFile();
-    std::vector<std::unique_ptr<Session>> extractDataFromChapterTimestampFile();
+    
+    std::unique_ptr<Sessions> extractDataFromChapterTimestampFile();
 
 private:
     std::string removeLeadingSpaces(std::string& line);
