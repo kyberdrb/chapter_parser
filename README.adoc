@@ -32,12 +32,19 @@ Example of a chapter file
    ...
 ....
 
-## Chapter names post procesing
+## Chapter metadata integration
 
 ....
-mv 01-Go\ Deep.chapter_timestamps 01-Go_Deep.chapter_timestamps
-mv 02-Stress\ Control.chapter_timestamps 02-Stress_Control.chapter_timestamps
-mv 10-Life\ Adventure.chapter_timestamps 10-Life_Adventure.chapter_timestamps
-mv 03-Energy\ Management.chapter_timestamps 03-Energy_Management.chapter_timestamps
-mv 07-Under\ Pressure.chapter_timestamps 07-Under_Pressure.chapter_timestamps
+# Run chapter extraction
+/home/laptop/git/kyberdrb/chapter_parser/cmake-build-debug/chapter_data_extractor
+
+
+# generate current metadata for the video
+ffmpeg -i 05-1-Endurance_-_Group_Class.mp4 -f ffmetadata 05-1-Endurance_-_Group_Class.mp4.metadata
+
+# generate new metadata by appending chapter metadata to current metadata
+cat 05-1-Endurance_-_Group_Class.mp4.metadata /home/laptop/git/kyberdrb/chapter_parser/cmake-build-debug/05-Endurance.chapter_timestamps | head --lines=-1 > 05-1-Endurance_-_Group_Class.mp4.metadata_with_chapters
+
+# overwrite current metadata of the video with the new metadata
+ffmpeg -i 05-1-Endurance_-_Group_Class.mp4 -i 05-1-Endurance_-_Group_Class.mp4.metadata_with_chapters -map_metadata 1 -codec copy 05-1-Endurance_-_Group_Class_-_with_chapters.mp4
 ....

@@ -14,7 +14,7 @@ public:
 
     friend std::ostream& operator<<(std::ostream& out, const Session& session) {
         //out << session.name << "\n";
-        //out << "\n";
+        out << "\n";
 
         for (const auto& chapter : session.chapters) {
             out << *chapter;
