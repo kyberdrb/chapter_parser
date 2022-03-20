@@ -13,24 +13,20 @@ public:
     void add_session(std::unique_ptr<Session> session);
     void add_chapter_to_last_session(string chapterName, string chapterBeginTime);
 
-    friend std::ostream& operator<<(std::ostream& out, const Sessions& sessions) {
+    friend std::ostream& operator<<(std::ostream& out, Sessions& sessions) {
         for (const auto & session : sessions.sessions) {
             out << session->getSessionName() << "\n";
             out << "\n";
 
             out << *session;
 
-            // replace all spaces with underscores in this session name
-            auto chaptersForSessionFilename = session->getSessionName();
-            size_t pos;
-            while ((pos = chaptersForSessionFilename.find(" ")) != std::string::npos) {
-                chaptersForSessionFilename.replace(pos, 1, "_");
-            }
+            auto filenameForChaptersOfSession = session->getSessionName();
+            sessions.replaceAllSpacesWithUnderscores(filenameForChaptersOfSession); // for easier working with chapter integration script and/or ffmpeg later on
 
             // append extension to session name, thus forming a full file name
-            chaptersForSessionFilename += ".chapter_timestamps";
+            filenameForChaptersOfSession += ".chapter_timestamps";
 
-            std::ofstream fout(chaptersForSessionFilename);
+            std::ofstream fout(filenameForChaptersOfSession);
 
             fout << *session << std::endl;
 
@@ -43,4 +39,11 @@ public:
 
 private:
     vector<std::unique_ptr<Session>> sessions;
+
+    void replaceAllSpacesWithUnderscores(string& filenameForChaptersOfSession) {
+        size_t position;
+        while ((position = filenameForChaptersOfSession.find(" ")) != std::string::npos) {
+            filenameForChaptersOfSession.replace(position, 1, "_");
+        }
+    }
 };

@@ -34,6 +34,13 @@ Example of a chapter file
 
 ## Chapter metadata integration
 
+- Semi-automatically
+
+. Edit `./utils/integrate_chapters_to_group_session_semiautomatically.sh` with the file name of the video including the extension and the chapter metadata filename generated from this app
+. From inside the Group_session directory
+
+- Manually
+
 ....
 # Run chapter extraction
 /home/laptop/git/kyberdrb/chapter_parser/cmake-build-debug/chapter_data_extractor
