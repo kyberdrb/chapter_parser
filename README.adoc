@@ -36,10 +36,16 @@ Example of a chapter file
 
 - Semi-automatically
 
-. Edit `./utils/integrate_chapters_to_group_session_semiautomatically.sh` with the file name of the video including the extension and the chapter metadata filename generated from this app
-. From inside the Group_session directory
+    . Run (example for the 6th session)
+
+    ../../utils/integrate_chapters_to_group_session_semiautomatically.sh 06-1-Longevity_-_Group_Class.mp4 06-Longevity.chapter_timestamps
+
+with the file name of the video including the extension and the chapter metadata filename generated from this app
+. From inside the `Group_session` directory
 
 - Manually
+
+Example for the 5th session
 
 ....
 # Run chapter extraction
