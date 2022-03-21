@@ -18,17 +18,19 @@ public:
     //   END=262
     //   title=Crew Introduction
     //   [empty line after each CHAPTER entry]
-    friend std::ostream& operator<<(std::ostream& out, Chapter& chapter) {
+    friend std::ostream& operator<<(std::ostream& out, const Chapter& chapter) {
         out << "[CHAPTER]" << "\n";
         out << "TIMEBASE=1/1" << "\n";
         out << "START=" << chapter.beginTime << "\n";  // 39
 
         // fix ffmpeg chapter metadata integration error:
-        //   "[ffmetadata @ 0x5620c003ee80] Expected chapter end timestamp, found END=."
-        if (chapter.endTime.empty()) {
-            chapter.endTime = std::to_string(
-                    std::stoi(chapter.beginTime) + 1);
-        }
+        //     "[ffmetadata @ 0x5620c003ee80] Expected chapter end timestamp, found END=."
+        //   but the ffmpeg utility fixes it automatically by itself during metadata integration
+        //   by setting the END of the last chapter to the end of the video
+//        if (chapter.endTime.empty()) {
+//            chapter.endTime = std::to_string(
+//                    std::stoi(chapter.beginTime) + 1);
+//        }
 
         out << "END=" << chapter.endTime << "\n";      // 262
         out << "title=" << chapter.name << "\n";       // Crew Introduction

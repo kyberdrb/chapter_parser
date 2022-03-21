@@ -18,15 +18,15 @@ Example of a chapter file
 ....
    [CHAPTER]
    TIMEBASE=1/1
-   START=39
-   END=262
-   title=Crew Introduction
+   START=11
+   END=222
+   title=Chapter title 1
 
    [CHAPTER]
    TIMEBASE=1/1
-   START=262
-   END=1299
-   title=Yoga and Stretches
+   START=223
+   END=1234
+   title=Chapter title 2
 
    [CHAPTER]
    ...
@@ -38,7 +38,7 @@ Example of a chapter file
 
     . Run (example for the 6th session)
 
-    ../../utils/integrate_chapters_to_group_session_semiautomatically.sh 06-1-Longevity_-_Group_Class.mp4 06-Longevity.chapter_timestamps
+    ../../utils/integrate_chapters_to_group_session_semiautomatically.sh video.mp4 session_number_and_name.chapter_timestamps
 
 with the file name of the video including the extension and the chapter metadata filename generated from this app
 . From inside the `Group_session` directory
@@ -53,7 +53,7 @@ Example for the 5th session
 
 
 # generate current metadata for the video
-ffmpeg -i 05-1-Endurance_-_Group_Class.mp4 -f ffmetadata 05-1-Endurance_-_Group_Class.mp4.metadata
+ffmpeg -i video.mp4 -f ffmetadata session.metadata
 
 # generate new metadata by appending chapter metadata to current metadata
 cat 05-1-Endurance_-_Group_Class.mp4.metadata /home/laptop/git/kyberdrb/chapter_parser/cmake-build-debug/05-Endurance.chapter_timestamps | head --lines=-1 > 05-1-Endurance_-_Group_Class.mp4.metadata_with_chapters
