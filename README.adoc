@@ -1,11 +1,12 @@
+= Chapter data extractor
+
 Read raw HTML source code from file
 and parse chapter beginning time and chapter name in an ffmpeg chapter metadata format according to
 
-https://ikyle.me/blog/2020/add-mp4-chapters-ffmpeg
-and
-
-https://topic.alibabacloud.com/a/ffmpegs-understanding-about-timebase_8_8_10257510.html +
-(search for "II: What is the timebase in FFmpeg")
+- https://ikyle.me/blog/2020/add-mp4-chapters-ffmpeg
+- https://topic.alibabacloud.com/a/ffmpegs-understanding-about-timebase_8_8_10257510.html
+    - (search for "II: What is the timebase in FFmpeg")
+- https://medium.com/@dathanbennett/adding-chapters-to-an-mp4-file-using-ffmpeg-5e43df269687
 
 Merge output of the base metadata
 
@@ -32,32 +33,71 @@ Example of a chapter file
    ...
 ....
 
-## Chapter metadata integration
+== Chapter metadata integration
 
 - Semi-automatically
 
     . Run (example for the 6th session)
 
-    ../../utils/integrate_chapters_to_group_session_semiautomatically.sh video.mp4 session_number_and_name.chapter_timestamps
+    ../../utils/integrate_chapters_to_group_session_semiautomatically.sh 05-1-Endurance_-_Group_Class.mp4 05-Endurance.chapter_timestamps
 
 with the file name of the video including the extension and the chapter metadata filename generated from this app
 . From inside the `Group_session` directory
 
-- Manually
+For the contents of the script see WHM on the cloud - uloz.to
+
+- Manually (for debugging purposes)
 
 Example for the 5th session
 
 ....
 # Run chapter extraction
 /home/laptop/git/kyberdrb/chapter_parser/cmake-build-debug/chapter_data_extractor
+....
 
+Continue with the integration process
 
-# generate current metadata for the video
-ffmpeg -i video.mp4 -f ffmetadata session.metadata
+For the contents of the script `integrate_chapters_to_group_session_semiautomatically.sh` see WHM on the cloud - uloz.to
 
-# generate new metadata by appending chapter metadata to current metadata
-cat 05-1-Endurance_-_Group_Class.mp4.metadata /home/laptop/git/kyberdrb/chapter_parser/cmake-build-debug/05-Endurance.chapter_timestamps | head --lines=-1 > 05-1-Endurance_-_Group_Class.mp4.metadata_with_chapters
+....
+ORIGINAL_MP4_VIDEO="$1"
+FFMPEG_CHAPTER_TIMESTAMPS="$2"
+
+#ORIGINAL_MP4_VIDEO="06-1-Longevity_-_Group_Class.mp4"
+#FFMPEG_CHAPTER_TIMESTAMPS="06-Longevity.chapter_timestamps"
+
+# generate base metadata only once
+if [ ! -e "${ORIGINAL_MP4_VIDEO}".metadata ]
+then
+  ffmpeg -i "${ORIGINAL_MP4_VIDEO}" -f ffmetadata "${ORIGINAL_MP4_VIDEO}".metadata
+fi
+
+# concatenate base metadata with the chapter metadata into one file
+cat "${ORIGINAL_MP4_VIDEO}".metadata /home/laptop/git/kyberdrb/chapter_parser/cmake-build-debug/"${FFMPEG_CHAPTER_TIMESTAMPS}" | head --lines=-1 > "${ORIGINAL_MP4_VIDEO}".metadata_with_chapters
+
+# remove current metadata from the original video
+ffmpeg -i "${ORIGINAL_MP4_VIDEO}" -map_metadata -1 -map_chapters -1 -codec copy "${ORIGINAL_MP4_VIDEO%.*}"_-_without_chapters.mp4
 
 # overwrite current metadata of the video with the new metadata
-ffmpeg -i 05-1-Endurance_-_Group_Class.mp4 -i 05-1-Endurance_-_Group_Class.mp4.metadata_with_chapters -map_metadata 1 -codec copy 05-1-Endurance_-_Group_Class_-_with_chapters.mp4
+ffmpeg -i "${ORIGINAL_MP4_VIDEO%.*}"_-_without_chapters.mp4 -i "${ORIGINAL_MP4_VIDEO}".metadata_with_chapters -map_metadata 1 #-map_chapters 1 -codec copy "${ORIGINAL_MP4_VIDEO%.*}"_-_with_chapters.mp4
+
+gio trash "${ORIGINAL_MP4_VIDEO}"
+gio trash "${ORIGINAL_MP4_VIDEO%.*}"_-_without_chapters.mp4
+#gio trash "${ORIGINAL_MP4_VIDEO}".metadata
+
+mv "${ORIGINAL_MP4_VIDEO%.*}"_-_with_chapters.mp4 "${ORIGINAL_MP4_VIDEO}"
+ffmpeg -i "${ORIGINAL_MP4_VIDEO}" -f ffmetadata "${ORIGINAL_MP4_VIDEO}".final_metadata_verification
 ....
+
+== Sources
+
+- https://gcc.gnu.org/onlinedocs/cpp/Tokenization.html
+- https://stackoverflow.com/questions/51705967/advantages-of-pass-by-value-and-stdmove-over-pass-by-reference
+- https://stackoverflow.com/questions/3601602/what-are-rvalues-lvalues-xvalues-glvalues-and-prvalues
+- https://stackoverflow.com/questions/22114277/converting-a-string-to-a-number-in-c/22114361#22114361
+- https://www.educba.com/c-plus-plus-int-to-string/
+- https://stackoverflow.com/questions/19218927/how-to-convert-from-raw-pointer-to-unique-pointer-in-c
+- https://stackoverflow.com/questions/5194119/writing-to-a-file-using-stream-in-c#5194139
+- https://stackoverflow.com/questions/2896600/how-to-replace-all-occurrences-of-a-character-in-string
+- https://www.techiedelight.com/replace-occurrences-character-string-cpp/
+- https://duckduckgo.com/?q=c%2B%2B+string+std+replace+error%3A+assignment+of+read-only+location&t=ffab&ia=web
